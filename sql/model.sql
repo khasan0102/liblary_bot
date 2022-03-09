@@ -1,5 +1,9 @@
+CREATE DATABASE liblary_bot;
+
+\c liblary_bot
+
 CREATE TABLE users (
-    chat_id VARCHAR(32) NOT NULL PRIMARY KEY
+    chat_id BIGINT NOT NULL PRIMARY KEY,
     username VARCHAR(64),
     phone_number VARCHAR(32),
     role SMALLINT DEFAULT 2,
@@ -15,7 +19,7 @@ CREATE TABLE languages(
     language_id SERIAL NOT NULL PRIMARY KEY,
     language VARCHAR(32),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE categories(
     category_id SERIAL NOT NULL PRIMARY KEY,
