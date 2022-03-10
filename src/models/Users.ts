@@ -13,6 +13,9 @@ const GET_ALL = `
              ELSE 'user'
         END as role
     FROM users u
+    WHERE u.role = 2
+    ORDER BY u.created_at DESC
+    OFFSET $1 ROWS FETCH FIRST $2 ROWS ONLY
 `;
 
 const GET_ONE = `
@@ -27,6 +30,12 @@ const GET_ONE = `
         END as role
     FROM users u
     WHERE u.chat_id = $1
+`;
+
+const ALL_COUNT = `
+    SELECT COUNT(*)
+    FROM users u
+    WHERE u.role = 2
 `;
 
 const CREATE = `
@@ -51,22 +60,33 @@ const DELETE_ONE = `
     WHERE chat_id = $1
 `;
 
-const getAll = async (): Promise<IUser[]> => fetchAll(GET_ALL);
-const getOne = async (chatId: number): Promise<IUser | undefined> => fetch(GET_ONE, chatId);
+const allCount = async (): Promise<{ count: number }> => fetch(ALL_COUNT);
+
 const create = async (chatId: number): Promise<IUser> => fetch(CREATE, chatId);
-const deleteOne = async (chatId: number): Promise<IUser | undefined> => fetch(DELETE_ONE, chatId);
+
+const getOne = async (chatId: number): Promise<IUser | undefined> =>
+    fetch(GET_ONE, chatId);
+
+const getAll = async (page: number = 0, count: number = 1000): Promise<IUser[]> =>
+    fetchAll(GET_ALL, page, count);
+
+const deleteOne = async (chatId: number): Promise<IUser | undefined> =>
+    fetch(DELETE_ONE, chatId);
+
 const updateOne = async (
     chatId: number,
     username: typeS,
     phone_number: typeS,
     step: typeN,
     role?: typeN
-): Promise<IUser | undefined> => fetch(UPDATE_ONE, chatId, username, phone_number, step, role);
+): Promise<IUser | undefined> =>
+    fetch(UPDATE_ONE, chatId, username, phone_number, step, role);
 
 export default {
     getAll,
     getOne,
     create,
+    allCount,
     updateOne,
-    deleteOne
+    deleteOne,
 };

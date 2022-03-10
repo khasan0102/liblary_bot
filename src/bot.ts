@@ -1,7 +1,7 @@
 import TelegramBot, { Message } from "node-telegram-bot-api";
+import UserRouter from "./routers/users";
 import Config from "./config";
 import Users from "./models/Users";
-import UsersController from "./controllers/userController";
 
 const bot = new TelegramBot(Config.TOKEN, { polling: true });
 
@@ -16,15 +16,6 @@ bot.on("message", async (msg: Message) => {
             `Assalomu alaykum xurmatli foydalanuchi. Iltimos ismingizni kiriting`
         );
     } else if (user.role === "user") {
-        switch (user.step) {
-            case 1:
-                UsersController.step1(bot, msg);
-                break;
-            case 2: 
-                UsersController.step2(bot, msg);
-                break;
-            default: 
-                bot.sendMessage(chatId, "Received your message");
-        }
+        UserRouter(bot, msg, user);
     }
 });
