@@ -1,8 +1,8 @@
-import TelegramBot, { Message } from "node-telegram-bot-api";
+import TelegramBot, { CallbackQuery, Message } from "node-telegram-bot-api";
 import UsersController from "../controllers/userController";
-import IUser from "../interfaces/users";
+import IUser from "../types/interfaces";
 
-export default async (bot: TelegramBot, msg: Message, user: IUser) => {
+export const UserRouterMessage = async (bot: TelegramBot, msg: Message, user: IUser) => {
     const chatId = msg.chat.id;
     switch (user.step) {
         case 1:
@@ -14,4 +14,18 @@ export default async (bot: TelegramBot, msg: Message, user: IUser) => {
         default: 
             bot.sendMessage(chatId, "Received your message");
     }
+}
+
+export const UsersRouterQuery = async (bot: TelegramBot, query: CallbackQuery) => {
+    if (query.data === "leftEnd")
+        bot.answerCallbackQuery({
+            callback_query_id: query.id,
+            text: "Siz eng bosh qismdasiz",
+        });
+
+    if (query.data === "rightEnd")
+        bot.answerCallbackQuery({
+            callback_query_id: query.id,
+            text: "Siz eng oxirgi qismdasiz",
+        });
 }

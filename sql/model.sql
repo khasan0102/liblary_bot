@@ -27,15 +27,20 @@ CREATE TABLE categories(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE authors (
+    author_id SERIAL NOT NULL PRIMARY KEY,
+    author_name VARCHAR(64) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE books (
     book_id SERIAL NOT NULL PRIMARY KEY,
     book_name VARCHAR(32) NOT NULL,
     book_price BIGINT,
     book_description TEXT,
     book_image VARCHAR(128),
-    book_author VARCHAR(64),
+    book_author INT NOT NULL REFERENCES authors(author_id),
     book_language INT NOT NULL REFERENCES languages(language_id),
     book_category INT NOT NULL REFERENCES categories(category_id),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-

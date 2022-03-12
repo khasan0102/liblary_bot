@@ -1,7 +1,8 @@
-import TelegramBot, { Message } from "node-telegram-bot-api";
-import UserRouter from "./routers/users";
+import TelegramBot, { Message, CallbackQuery } from "node-telegram-bot-api";
+import { UserRouterMessage, UsersRouterQuery } from "./routers/users";
 import Config from "./config";
 import Users from "./models/Users";
+import { AdminRouterMessage, AdminRouterQuery } from "./routers/admin";
 
 const bot = new TelegramBot(Config.TOKEN, { polling: true });
 
@@ -16,6 +17,13 @@ bot.on("message", async (msg: Message) => {
             `Assalomu alaykum xurmatli foydalanuchi. Iltimos ismingizni kiriting`
         );
     } else if (user.role === "user") {
-        UserRouter(bot, msg, user);
+        UserRouterMessage(bot, msg, user);
+    } else {
+        AdminRouterMessage(bot, msg);
     }
+});
+
+bot.on("callback_query", (query: CallbackQuery) => {
+    if (query.data?.search("/admin") !== -1) AdminRouterQuery(bot, query);
+    else UsersRouterQuery(bot, query);
 });

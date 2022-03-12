@@ -1,6 +1,6 @@
 import { fetch, fetchAll } from "../lib/postgres";
-import IUser from "../interfaces/users";
-import { typeN, typeS } from "../interfaces/types";
+import { IUser } from "../types/interfaces";
+import { typeN, typeS } from "../types/types";
 
 const GET_ALL = `
     SELECT 
@@ -67,8 +67,10 @@ const create = async (chatId: number): Promise<IUser> => fetch(CREATE, chatId);
 const getOne = async (chatId: number): Promise<IUser | undefined> =>
     fetch(GET_ONE, chatId);
 
-const getAll = async (page: number = 0, count: number = 1000): Promise<IUser[]> =>
-    fetchAll(GET_ALL, page, count);
+const getAll = async (
+    page: number = 0,
+    count: number = 1000
+): Promise<IUser[]> => fetchAll(GET_ALL, page, count);
 
 const deleteOne = async (chatId: number): Promise<IUser | undefined> =>
     fetch(DELETE_ONE, chatId);

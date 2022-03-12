@@ -1,4 +1,4 @@
-import IUser from "src/interfaces/users";
+import IUser from "src/types/interfaces";
 
 export default {
     phoneBtn: {
