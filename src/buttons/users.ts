@@ -1,4 +1,4 @@
-import IUser from "src/types/interfaces";
+import { IUser } from "src/types/interfaces";
 
 export default {
     phoneBtn: {
@@ -20,21 +20,21 @@ export default {
         for (let i = 0; i < users.length; i++) {
             if (i < 5) {
                 first.push({
-                    callback_data: `${users[i].chat_id}/users`,
+                    callback_data: `${users[i].chat_id}/users/admin`,
                     text: `${+i + 1}`,
                 });
             } else {
                 second.push({
-                    callback_data: `${users[i].chat_id}/users`,
+                    callback_data: `${users[i].chat_id}/users/admin`,
                     text: `${+i + 1}`,
                 });
             }
         }
 
-        const leftData = page > 0 ? `${page - 1}/data` : "leftEnd";
+        const leftData = page > 0 ? `${page - 1}/usersData/admin` : "leftEnd";
         const rightData =
             page < Math.ceil(allCount / 10) - 1
-                ? `${page + 1}/data`
+                ? `${page + 1}/usersData/admin`
                 : "rightEnd";
 
         return [
@@ -56,4 +56,16 @@ export default {
             ],
         ];
     },
+    userButton:  (user: IUser) => {
+        return [[
+            {
+                text: "❌",
+                callback_data: "delete"
+            },
+            {
+                text: "Admin qilish",
+                callback_data: `${user.chat_id}/setAdmin/admin`
+            }
+        ]]
+    }
 };

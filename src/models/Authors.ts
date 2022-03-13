@@ -20,7 +20,7 @@ const CREATE = `
 `;
 
 const UPDATE = `
-    UPDATE authors
+    UPDATE authors  
     SET author_name = $2
     WHERE author_id = $1
     RETURNING *
