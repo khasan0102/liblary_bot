@@ -31,3 +31,11 @@ export const fetchAll = async (query: string, ...params: any): Promise<any[]> =>
         client.release()
     }
 }
+
+export const allCount =async (table: string): Promise<{ count: number }> => {
+    return fetch(`
+        SELECT 
+            COUNT(*)
+        FROM ${table}
+    `)
+};

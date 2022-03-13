@@ -1,11 +1,12 @@
-import { fetch, fetchAll } from "src/lib/postgres";
-import { ILanguage } from "src/types/interfaces";
+import { fetch, fetchAll } from "../lib/postgres";
+import { ILanguage } from "../types/interfaces";
 
 const LANGUAGES = `
     SELECT 
         *
     FROM languages l
-    ORDER BY l.created_at
+    ORDER BY l.created_at DESC
+    OFFSET $1 ROWS FETCH FIRST $2 ROWS ONLY
 `;
 
 const LANGUAGE = `
@@ -33,7 +34,8 @@ const DELETE = `
     RETURNING *
 `;
 
-const getAll = (): Promise<ILanguage[]> => fetchAll(LANGUAGES);
+const getAll = (page: number = 0, count: number = 100): Promise<ILanguage[]> =>
+    fetchAll(LANGUAGES, page, count);
 
 const create = (language: string): Promise<ILanguage> =>
     fetch(CREATE, language);

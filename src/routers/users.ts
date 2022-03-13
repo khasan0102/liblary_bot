@@ -24,21 +24,35 @@ export const UsersRouterQuery = async (
     bot: TelegramBot,
     query: CallbackQuery
 ) => {
-    if (query.data === "leftEnd")
+    if (query.data === "leftEnd") {
         bot.answerCallbackQuery({
             callback_query_id: query.id,
             text: "Siz eng bosh qismdasiz",
         });
 
-    if (query.data === "rightEnd")
+        return;
+    }
+
+    if (query.data === "rightEnd") {
         bot.answerCallbackQuery({
             callback_query_id: query.id,
             text: "Siz eng oxirgi qismdasiz",
         });
 
-    if (query.data === "delete")
+        return;
+    }
+
+    if (query.data === "delete") {
         bot.deleteMessage(
             query.message?.chat.id || "",
             query.message?.message_id + ""
         );
+
+        return;
+    }
+
+    if (query.data === "cancel") {
+        UsersController.cancel(bot, query);
+        return;
+    }
 };

@@ -19,7 +19,7 @@ bot.on("message", async (msg: Message) => {
     } else if (user.role === "user") {
         UserRouterMessage(bot, msg, user);
     } else {
-        AdminRouterMessage(bot, msg);
+        AdminRouterMessage(bot, msg, user);
     }
 });
 

@@ -13,6 +13,12 @@ export default {
             ],
         ],
     },
+    cancelBtn: [[
+        {
+            text: "Bekor qilish ❌",
+            callback_data: "cancel"
+        }
+    ]],
     usersButtons: (users: IUser[], page: number, allCount: number) => {
         const first = [];
         const second = [];

@@ -1,4 +1,4 @@
-import TelegramBot, { Message } from "node-telegram-bot-api";
+import TelegramBot, { CallbackQuery, Message } from "node-telegram-bot-api";
 import Users from "../models/Users";
 import usersBtn from "../buttons/users";
 
@@ -50,7 +50,19 @@ const step2 = async (bot: TelegramBot, msg: Message) => {
     }
 };
 
+const cancel = async (bot: TelegramBot, query: CallbackQuery) => {
+    try {
+        const chatId = Number(query.message?.chat.id);
+        await Users.updateOne(chatId, null, null, 0);
+
+        bot.sendMessage(chatId, `Bekor qilindi 🙁`);
+    } catch (error) {
+        console.log(error);
+    }
+};
+
 export default {
     step1,
     step2,
+    cancel,
 };

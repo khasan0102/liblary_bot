@@ -2,6 +2,7 @@ import TelegramBot, { CallbackQuery, Message } from "node-telegram-bot-api";
 import usersBtn from "../buttons/users";
 import Users from "../models/Users";
 
+
 const allUsers = async (bot: TelegramBot, msg: Message) => {
     try {
         const chatId = msg.chat.id;
@@ -60,41 +61,65 @@ const userPagination = async (
             message_id: messageId,
             parse_mode: "HTML",
             reply_markup: {
-                inline_keyboard: usersBtn.usersButtons(users, page, count)
-            }
-        })
+                inline_keyboard: usersBtn.usersButtons(users, page, count),
+            },
+        });
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
 };
 
-
-const user = async (bot: TelegramBot, query: CallbackQuery, userId: number): Promise<void> => {
+const user = async (
+    bot: TelegramBot,
+    query: CallbackQuery,
+    userId: number
+): Promise<void> => {
     try {
         const user = await Users.getOne(userId);
         const chatId = query.message?.chat.id || "";
 
-        if(!user) {
+        if (!user) {
             bot.sendMessage(chatId, `Bunday user topilmadi!`);
             return;
         }
-            
-        
+
         const responseText = `<b>${user.username} - ${user.phone_number}</b>`;
 
         bot.sendMessage(chatId, responseText, {
             parse_mode: "HTML",
             reply_markup: {
-                inline_keyboard: usersBtn.userButton(user)
-            }
-        })
-    } catch(error) {
+                inline_keyboard: usersBtn.userButton(user),
+            },
+        });
+    } catch (error) {
         console.log(error);
     }
-}
+};
+
+const adminStep = async (
+    bot: TelegramBot,
+    msg: Message,
+    step: number,
+    message: string
+) => {
+    try {
+        await Users.updateOne(msg.chat.id, null, null, step);
+
+        bot.sendMessage(msg.chat.id, message, {
+            parse_mode: "HTML",
+            reply_markup: {
+                one_time_keyboard: true,
+                keyboard: usersBtn.cancelBtn
+            }
+        });
+    } catch (error) {
+        console.log(error);
+    }
+};
 
 export default {
     allUsers,
     userPagination,
-    user
+    adminStep,
+    user,
 };
