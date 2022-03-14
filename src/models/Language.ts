@@ -3,8 +3,11 @@ import { ILanguage } from "../types/interfaces";
 
 const LANGUAGES = `
     SELECT 
-        *
+        l.*,
+        COUNT(b.book_id) as books_count
     FROM languages l
+    LEFT JOIN books b ON b.book_language = l.language_id
+    GROUP BY l.language_id
     ORDER BY l.created_at DESC
     OFFSET $1 ROWS FETCH FIRST $2 ROWS ONLY
 `;
