@@ -17,7 +17,7 @@ const LANGUAGE = `
     FROM languages l
     WHERE l.language_id = $1
 `;
-
+ 
 const CREATE = `
     INSERT INTO languages (language)
     VALUES($1)
