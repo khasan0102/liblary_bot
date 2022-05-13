@@ -16,6 +16,7 @@ CREATE TABLE users (
 -- 2 -> user
 -- 3 -> books
 -- 3 -> books
+-- 3 -> books
 
 
 CREATE TABLE languages(
