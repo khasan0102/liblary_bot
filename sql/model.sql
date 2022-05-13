@@ -15,6 +15,8 @@ CREATE TABLE users (
 -- 1 -> admin
 -- 2 -> user
 -- 3 -> books
+-- 3 -> books
+
 
 CREATE TABLE languages(
     language_id SERIAL NOT NULL PRIMARY KEY,
